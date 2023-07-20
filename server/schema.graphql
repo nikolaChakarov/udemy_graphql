@@ -1,0 +1,25 @@
+schema {
+	query: Query
+}
+
+type Query {
+	jobs: [Job!]
+}
+
+type Company {
+	id: ID!
+	name: String
+	subscribtion: String
+}
+
+type Job {
+	# this is a regular comment
+	id: ID!
+	"""
+	The __date__ when the job was published, in ISO-8601 format. E.g. `2023-20-07`
+	"""
+	title: String!
+	company: Company
+	description: String
+	date: String!
+}
