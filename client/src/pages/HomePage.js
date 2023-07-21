@@ -1,10 +1,19 @@
+import { useState, useEffect } from 'react';
 import JobList from '../components/JobList';
-import { jobs } from '../lib/fake-data';
 import { getJobs } from '../lib/graphql/queries';
 
-getJobs().then((res) => console.log(res));
-
 function HomePage() {
+	const [jobs, setJobs] = useState([]);
+
+	const initLoad = async () => {
+		const jobs = await getJobs();
+		setJobs(jobs);
+	};
+
+	useEffect(() => {
+		initLoad();
+	}, []);
+
 	return (
 		<div>
 			<h1 className='title'>Job Board</h1>
