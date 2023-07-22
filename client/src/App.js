@@ -10,43 +10,39 @@ import JobPage from './pages/JobPage';
 import LoginPage from './pages/LoginPage';
 
 function App() {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(getUser);
+	const navigate = useNavigate();
+	const [user, setUser] = useState(getUser);
 
-  const handleLogin = (user) => {
-    setUser(user);
-    navigate('/');
-  };
+	const handleLogin = (user) => {
+		setUser(user);
+		navigate('/');
+	};
 
-  const handleLogout = () => {
-    setUser(null);
-    navigate('/');
-  };
+	const handleLogout = () => {
+		setUser(null);
+		navigate('/');
+	};
 
-  return (
-    <>
-      <NavBar user={user} onLogout={handleLogout} />
-      <main className="section">
-        <Routes>
-          <Route index path="/"
-            element={<HomePage />}
-          />
-          <Route path="/companies/:companyId"
-            element={<CompanyPage />}
-          />
-          <Route path="/jobs/new"
-            element={<CreateJobPage />}
-          />
-          <Route path="/jobs/:jobId"
-            element={<JobPage />}
-          />
-          <Route path="/login"
-            element={<LoginPage onLogin={handleLogin} />}
-          />
-        </Routes>
-      </main>
-    </>
-  );
+	return (
+		<>
+			<NavBar user={user} onLogout={handleLogout} />
+			<main className='section'>
+				<Routes>
+					<Route index path='/' element={<HomePage />} />
+					<Route
+						path='/companies/:companyId'
+						element={<CompanyPage />}
+					/>
+					<Route path='/jobs/new' element={<CreateJobPage />} />
+					<Route path='/jobs/:jobId' element={<JobPage />} />
+					<Route
+						path='/login'
+						element={<LoginPage onLogin={handleLogin} />}
+					/>
+				</Routes>
+			</main>
+		</>
+	);
 }
 
 export default App;
