@@ -1,7 +1,7 @@
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
-import { formatDate } from '../lib/formatters';
-import { jobs } from '../lib/fake-data';
+// import { formatDate } from '../lib/formatters';
+// import { jobs } from '../lib/fake-data';
 import { getJob } from '../lib/graphql/queries';
 import { useEffect, useState } from 'react';
 
@@ -11,7 +11,6 @@ function JobPage() {
 	const [job, setJob] = useState(null);
 	useEffect(() => {
 		getJob(jobId).then((res) => {
-			console.log(res);
 			setJob(res);
 		});
 	}, [jobId]);
