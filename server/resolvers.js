@@ -45,7 +45,10 @@ export const resolvers = {
 	},
 
 	Mutation: {
-		createJob: (_parent, args) => {
+		createJob: (_parent, args, { auth }) => {
+			if (!auth) {
+				throw unauthorizedError('Missing authentication');
+			}
 			const {
 				input: { title, description },
 			} = args;
@@ -67,4 +70,8 @@ function notFoundError(message) {
 
 function toIsoDate(value) {
 	return value.slice(0, 'yyyy-dd-mm'.length);
+}
+
+function unauthorizedError(message) {
+	return new GraphQLError(message, { extensions: { code: 'UNAUTHORIZED' } });
 }
