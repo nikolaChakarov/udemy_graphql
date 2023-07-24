@@ -16,7 +16,6 @@ function CompanyPage() {
 		(async () => {
 			try {
 				const company = await getCompany(companyId);
-				console.log(company);
 				setState({ company, loading: false, error: false });
 			} catch (error) {
 				console.log('error:', JSON.stringify(error, null, 2));
