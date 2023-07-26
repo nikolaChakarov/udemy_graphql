@@ -13,7 +13,6 @@ export const resolvers = {
 	Query: {
 		company: async (_parent, args) => {
 			const company = await getCompany(args.id);
-			console.log(company);
 
 			if (!company) {
 				throw notFoundError('No Company found with id ' + args.id);
@@ -45,21 +44,45 @@ export const resolvers = {
 	},
 
 	Mutation: {
-		createJob: (_parent, args, { auth }) => {
-			if (!auth) {
+		createJob: (_parent, args, { user }) => {
+			if (!user) {
 				throw unauthorizedError('Missing authentication');
 			}
 			const {
 				input: { title, description },
 			} = args;
-			const companyId = 'FjcJCHJALA4i'; // TODO set based on user
+			const companyId = user.companyId;
 			return createJob({ companyId: companyId, title, description });
 		},
-		deleteJob: (_parent, { id }) => {
-			return deleteJob(id);
+		deleteJob: async (_parent, { id }, { user }) => {
+			if (!user) {
+				throw unauthorizedError('Missing authentication');
+			}
+			const job = await deleteJob(id, user.companyId);
+
+			if (!job) {
+				throw unauthorizedError('Not Job found with id: ' + id);
+			}
+			return job;
 		},
-		updateJob: (_parent, { input: { id, title, description } }) => {
-			return updateJob({ id, title, description });
+		updateJob: async (
+			_parent,
+			{ input: { id, title, description } },
+			{ user }
+		) => {
+			if (!user) {
+				throw unauthorizedError('Missing authentication');
+			}
+			const job = await updateJob({
+				id,
+				companyId: user.companyId,
+				title,
+				description,
+			});
+			if (!job) {
+				throw unauthorizedError('Not Job found with id: ' + id);
+			}
+			return job;
 		},
 	},
 };

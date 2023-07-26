@@ -1,6 +1,18 @@
+import { ApolloClient } from '@apollo/client';
 import { GraphQLClient, gql } from 'graphql-request';
+import { getAccessToken } from '../auth';
 
-const client = new GraphQLClient('http://localhost:9000/graphql');
+const client = new GraphQLClient('http://localhost:9000/graphql', {
+	headers: () => {
+		const token = getAccessToken();
+		if (token) {
+			return {
+				Authorization: `Bearer ${token}`,
+			};
+		}
+		return {};
+	},
+});
 
 export async function createJob({ title, description }) {
 	const query = gql`
@@ -28,7 +40,34 @@ export async function deleteJob(id) {
 		}
 	`;
 
-	return client.request(query, { id });
+	try {
+		const deleted = await client.request(query, { id });
+		return deleted;
+	} catch (error) {
+		console.log(error);
+	}
+}
+
+export async function updatedJob({ id, title, description }) {
+	const query = gql`
+		mutation UpdateJob($input: UpdateJobInput!) {
+			updateJob(input: $input) {
+				id
+				title
+				description
+			}
+		}
+	`;
+
+	try {
+		const updatedJob = await client.request(query, {
+			input: { id, title, description },
+		});
+		console.log('updatedJob::', updatedJob);
+		return updatedJob;
+	} catch (err) {
+		console.log(err);
+	}
 }
 
 export async function getJob(id) {

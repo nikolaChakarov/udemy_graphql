@@ -2,7 +2,7 @@ import { useParams } from 'react-router';
 import { Link, useNavigate } from 'react-router-dom';
 // import { formatDate } from '../lib/formatters';
 // import { jobs } from '../lib/fake-data';
-import { getJob } from '../lib/graphql/queries';
+import { getJob, updatedJob } from '../lib/graphql/queries';
 import { useEffect, useState } from 'react';
 import { deleteJob } from '../lib/graphql/queries';
 
@@ -16,6 +16,17 @@ function JobPage() {
 		await deleteJob(jobId);
 
 		navigate('/');
+	};
+
+	const handleUpdate = async () => {
+		// to do...
+		const updated = await updatedJob({
+			id: jobId,
+			title: 'test update',
+			description: 'test description...',
+		});
+
+		console.log('updated job:::', updated);
 	};
 
 	useEffect(() => {
@@ -49,6 +60,9 @@ function JobPage() {
 					}}
 				>
 					{job?.description}
+					<span onClick={handleUpdate} style={{ cursor: 'pointer' }}>
+						&#x274C;
+					</span>
 					<span onClick={handleDelete} style={{ cursor: 'pointer' }}>
 						&#x274C;
 					</span>

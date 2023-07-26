@@ -39,7 +39,7 @@ input CreateJobInput {
 }
 
 input UpdateJobInput {
-	id: ID!
-	title: String!
+	id: ID
+	title: String
 	description: String
 }
