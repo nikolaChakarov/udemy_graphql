@@ -1,18 +1,28 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 import JobList from '../components/JobList';
-import { getJobs } from '../lib/graphql/queries';
+// import { getJobs } from '../lib/graphql/queries';
+import { useJobs } from '../lib/graphql/hooks';
 
 function HomePage() {
-	const [jobs, setJobs] = useState([]);
+	const { jobs, loading, error } = useJobs();
 
-	const initLoad = async () => {
-		const jobs = await getJobs();
-		setJobs(jobs);
-	};
+	if (loading) {
+		return <p>Loading...</p>;
+	}
 
-	useEffect(() => {
-		initLoad();
-	}, []);
+	if (error) {
+		return <p>Data not available</p>;
+	}
+	// const [jobs, setJobs] = useState([]);
+
+	// const initLoad = async () => {
+	// 	const jobs = await getJobs();
+	// 	setJobs(jobs);
+	// };
+
+	// useEffect(() => {
+	// 	initLoad();
+	// }, []);
 
 	return (
 		<div>

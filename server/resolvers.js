@@ -12,6 +12,7 @@ import { getCompany } from './db/companies.js';
 export const resolvers = {
 	Query: {
 		company: async (_parent, args) => {
+			console.log(args);
 			const company = await getCompany(args.id);
 
 			if (!company) {

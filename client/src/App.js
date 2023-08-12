@@ -1,3 +1,5 @@
+import { ApolloProvider } from '@apollo/client';
+import { apolloClient } from './lib/graphql/queries';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Route, Routes } from 'react-router-dom';
@@ -24,7 +26,7 @@ function App() {
 	};
 
 	return (
-		<>
+		<ApolloProvider client={apolloClient}>
 			<NavBar user={user} onLogout={handleLogout} />
 			<main className='section'>
 				<Routes>
@@ -41,7 +43,7 @@ function App() {
 					/>
 				</Routes>
 			</main>
-		</>
+		</ApolloProvider>
 	);
 }
 

@@ -5,12 +5,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getJob, updatedJob } from '../lib/graphql/queries';
 import { useEffect, useState } from 'react';
 import { deleteJob } from '../lib/graphql/queries';
+import { useJob } from '../lib/graphql/hooks';
 
 function JobPage() {
 	const navigate = useNavigate();
 	const { jobId } = useParams();
+	const { job, loading, error } = useJob(jobId);
 
-	const [job, setJob] = useState(null);
+	// const [job, setJob] = useState(null);
 
 	const handleDelete = async () => {
 		await deleteJob(jobId);
@@ -29,11 +31,11 @@ function JobPage() {
 		console.log('updated job:::', updated);
 	};
 
-	useEffect(() => {
-		getJob(jobId).then((res) => {
-			setJob(res);
-		});
-	}, [jobId]);
+	// useEffect(() => {
+	// 	getJob(jobId).then((res) => {
+	// 		setJob(res);
+	// 	});
+	// }, [jobId]);
 
 	if (!job) {
 		return <p>Loading...</p>;
